@@ -1,4 +1,31 @@
+import importlib.util
 import os
+import sys
+
+# List of required packages
+required_packages = ['pandas', 'pygame']
+
+# Check if a package is installed
+def package_installed(package_name):
+    spec = importlib.util.find_spec(package_name)
+    return spec is not None
+
+# Install missing packages
+def install_packages(package_list):
+    for package in package_list:
+        print(f"Installing {package}...")
+        os.system(f"pip install {package}")
+
+# Check for required packages
+missing_packages = [package for package in required_packages if not package_installed(package)]
+
+# If any packages are missing, install them
+if missing_packages:
+    print("Some required packages are missing. Installing...")
+    install_packages(missing_packages)
+    # Restart script to import newly installed packages
+    os.execl(sys.executable, sys.executable, *sys.argv)
+    
 import serial
 from time import *
 import pandas as pd
